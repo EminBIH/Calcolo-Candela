@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolo Costo Candela</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #555;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calcolo Costo Candela</h1>
+    <div class="container">
+        <label for="pesoVuoto">Peso Stampo Vuoto (g):</label>
+        <input type="number" id="pesoVuoto" placeholder="Es: 30">
+
+        <label for="pesoPieno">Peso Stampo Pieno (g):</label>
+        <input type="number" id="pesoPieno" placeholder="Es: 130">
+
+        <button onclick="calcola()">Calcola</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calcola() {
+            const pesoVuoto = parseFloat(document.getElementById('pesoVuoto').value);
+            const pesoPieno = parseFloat(document.getElementById('pesoPieno').value);
+
+            if (isNaN(pesoVuoto) || isNaN(pesoPieno)) {
+                document.getElementById('result').innerText = "Inserisci valori validi!";
+                return;
+            }
+
+            const pesoAcqua = pesoPieno - pesoVuoto;
+            const volume = pesoAcqua; // 1 g di acqua = 1 cm³
+            const pesoCera = volume * 0.9; // Cera ha densità 0.9 g/cm³
+
+            const costoCeraAlChilo = 7;
+            const costoCera = (pesoCera / 1000) * costoCeraAlChilo;
+
+            const spedizioneItalia = 6;
+            const spedizioneEstero = 14;
+
+            const costoGas = 0.5; // Calcolo semplificato
+            const costoImballaggio = 1.25; // Valore fisso
+
+            const costoTotaleItalia = costoCera + spedizioneItalia + costoGas + costoImballaggio;
+            const costoTotaleEstero = costoCera + spedizioneEstero + costoGas + costoImballaggio;
+
+            const guadagnoNetto = 3;
+            const commissioneEtsy = 0.1005;
+
+            const prezzoVenditaItalia = (costoTotaleItalia / (1 - commissioneEtsy)) + guadagnoNetto;
+            const prezzoVenditaEstero = (costoTotaleEstero / (1 - commissioneEtsy)) + guadagnoNetto;
+
+            document.getElementById('result').innerHTML = `
+                Peso cera da sciogliere: ${pesoCera.toFixed(2)} g<br>
+                Prezzo di vendita Italia: <strong>${prezzoVenditaItalia.toFixed(2)} EUR</strong><br>
+                Prezzo di vendita Estero: <strong>${prezzoVenditaEstero.toFixed(2)} EUR</strong>
+            `;
+        }
+    </script>
+</body>
+</html>
